@@ -124,8 +124,7 @@ Lower-level access: `Kit::prepare` (inputs only), `inference::flow_sample[_obser
 
 Supported checkpoints: the two official files `step_market_284M.pt` and
 `step_market_284M_train260410.pt` (same architecture: 21 layers, width 1024, 284M parameters).
-Only the first was available to the port's author for parity testing; the second differs only
-in training data. The loader validates every tensor name, shape, dtype and finiteness against
+The first was used for all parity testing. The second (training step 63000) was downloaded through `Kit::from_hub`, loads with the same strict validation and produces finite, plausible forecasts (see `tests/hub.rs`, ignored by default); it was not compared against upstream numerically. The loader validates every tensor name, shape, dtype and finiteness against
 the checkpoint's own configuration and reports `MissingTensor`, `ShapeMismatch` or
 `Checkpoint` errors.
 
@@ -210,13 +209,14 @@ the small items and a single run for the full forecast. Checkpoint load: 1.4-2.7
 |---|---|---|---|---|---|---|
 | 1d  | 250 / 20  | CPU  | 0.12 ms | 2.50 s | 84.1 s  | 2.63 s |
 | 1h  | 400 / 20  | CPU  | 0.19 ms | 4.31 s | 140.4 s | 4.39 s |
+| 30m | 640 / 40  | CPU  | 0.42 ms | 8.69 s | 284.8 s | 8.90 s |
+| 5m  | 960 / 96  | CPU  | 1.37 ms | 15.24 s | 494.0 s | 15.44 s |
 | 1d  | 250 / 20  | CUDA | 0.10 ms | 0.18 s | 5.30 s  | 0.17 s |
 | 1h  | 400 / 20  | CUDA | 0.13 ms | 0.25 s | 8.61 s  | 0.27 s |
 | 30m | 640 / 40  | CUDA | 0.23 ms | 0.46 s | 15.6 s  | 0.49 s |
 | 5m  | 960 / 96  | CUDA | 0.77 ms | 0.89 s | 30.1 s  | 0.94 s |
 
-Not measured: CPU for 30m, 15m, 5m and 1m beyond the parity runs (those took 160-790 s per
-case with a busy machine, so they are not clean timings), and CUDA for 15m, 2h and 1m. The GPU
+Not measured cleanly: CPU for 15m, 2h and 1m (the parity runs took 160-790 s per case but shared the machine with builds), and CUDA for 15m, 2h and 1m. The GPU
 stopped responding ("GPU is lost") during the 1m run and needs a reboot. The CPU numbers show
 that Candle's CPU path is much slower than PyTorch's; this port is practical on CPU only for
 short forecasts or small `paths`. "1 model evaluation" is one batched forward over all paths
