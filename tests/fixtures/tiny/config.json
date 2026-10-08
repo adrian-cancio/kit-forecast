@@ -1,0 +1,21 @@
+{
+  "d_model": 32,
+  "n_layers": 2,
+  "n_heads": 4,
+  "ffn_hidden": 48,
+  "in_features": 5,
+  "rope_theta": 10000.0,
+  "n_registers": 4,
+  "inst_vocab": 16,
+  "inst_dim": 8,
+  "market_slots": 16,
+  "sector_slots": 64,
+  "scale_slots": 16,
+  "t_emb_dim": 16,
+  "clock_dim": 16,
+  "sess_hidden": 16,
+  "yday_dim": 8,
+  "qk_norm": true,
+  "attn_backend": "math",
+  "use_activation_checkpointing": false
+}

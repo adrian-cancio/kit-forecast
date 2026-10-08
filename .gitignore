@@ -1,0 +1,14 @@
+/target
+/target-*/
+/references/
+/tools/cache/
+/.venv/
+/tools/.venv/
+__pycache__/
+*.pyc
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+!/tests/fixtures/tiny/*.safetensors
+!/tests/fixtures/tiny_ckpt.pt

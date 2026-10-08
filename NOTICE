@@ -1,0 +1,51 @@
+kit-forecast
+============
+
+kit-forecast is a Rust port of KiT ("KiT: A Foundation Model for Candlestick Time-Series
+Forecasting via Diffusion Transformers"). It is NOT the official KiT implementation and is not
+affiliated with or endorsed by the KiT authors.
+
+Original work
+-------------
+  Project:     KiT
+  Authors:     Boyu Zhang, Haorui Li (as named in the upstream citation block);
+               repository commits are by "Boyu" (GitHub: Luciferbobo)
+  Repository:  https://github.com/Luciferbobo/KiT
+  Paper:       arXiv:2609.34507
+  Licence:     "Released under the AGPL-3.0 license" (upstream README). The upstream LICENSE file
+               is the unmodified GNU Affero General Public License, version 3. Upstream source
+               files carry no copyright headers and no "only"/"or later" wording; the
+               reference revision used for this port is 02a6887 (see README.md).
+
+This port is derived from the upstream Python source (kit_v1/model, kit_v1/infer, kit_v1/data,
+kit_v1/config.py and eval/infer_for_pred.py). The architecture, tensor layout, normalisation
+constants, calendar rules, sampler and post-processing follow that source. Because the work is a
+direct port, it is distributed under the same licence: GNU AGPL v3 (SPDX: AGPL-3.0-only).
+The full text is in the LICENSE file.
+
+Modifications
+-------------
+  * Rewritten from Python/PyTorch to Rust on the Candle tensor library.
+  * Pickle/zip checkpoint reader written in Rust so the official .pt loads without Python.
+  * PyTorch-compatible Mersenne-Twister/Box-Muller noise generator.
+  * Typed high-level API (requests, options, results), structured errors, batching.
+  * Input validation and typed calendars added; upstream training, plotting, backtest and
+    metric code is not ported.
+  * Test fixtures under tests/fixtures/tiny were generated with the upstream Python code from
+    synthetic inputs and randomly initialised weights; they contain no upstream data.
+
+Not covered by the software licence
+-----------------------------------
+The pretrained weights (Hugging Face: Lucifer744/KiT_model) and the demo dataset
+(Hugging Face: Lucifer744/KiT_data_demo) are NOT part of this package. Neither Hugging Face
+repository declares a licence in its metadata; both cards only say "See the main repository for
+license information". The AGPL text in the code repository does not state that it extends to
+model weights or data. This crate therefore ships no weights and no market data except
+src/data/ashare_stats.json (35 normalisation constants, see below). Check with the KiT authors
+before redistributing weights or data, or using them commercially.
+
+src/data/ashare_stats.json is a verbatim copy of stats.json from the demo dataset: numeric
+normalisation scales that the model requires to interpret its inputs and outputs.
+
+Third-party dependencies are used under their own licences (MIT/Apache-2.0 and similar); see
+Cargo.toml and `cargo tree`.
