@@ -134,8 +134,8 @@ the checkpoint's own configuration and reports `MissingTensor`, `ShapeMismatch` 
 | backend | status |
 |---|---|
 | CPU | supported, tested |
-| CUDA (`--features cuda`) | built and tested on an RTX 4050 (sm_89, CUDA 12.6, MSVC) |
-| Metal (`--features metal`) | exposed through Candle, **not tested** by the port's author |
+| CUDA (`--features cuda`) | built and tested on an RTX 4050 (sm_89, CUDA 12.6, MSVC): CPU-vs-CUDA agreement on the tiny model (6e-8) and the benchmarks below. The full official-checkpoint parity suite was run on CPU only. |
+| Metal (`--features metal`) | exposed through Candle; **cannot be built or tested on Windows** (`objc2` only compiles for Apple targets), so it is unverified |
 
 Models run in `f32` on every backend (upstream's default evaluation runs in bf16 on GPU; see
 limitations).
